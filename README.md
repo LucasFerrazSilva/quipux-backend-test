@@ -60,7 +60,8 @@ Para a implementação da API, ter em conta:
     "músicas": [
         {
             "titulo": "",
-            "artista": """album": "",
+            "artista": "",
+            "album": "",
             "ano": "",
             "genero": ""
         },
