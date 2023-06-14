@@ -5,6 +5,8 @@ import com.quipux.quipuxbackendtest.domain.playlist.PlaylistDTO;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistRepository;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistsListDTO;
 import com.quipux.quipuxbackendtest.infra.exception.ValidationException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -39,27 +41,29 @@ public class PlaylistController {
 
     @GetMapping("/{listName}")
     public ResponseEntity describeList(@PathVariable String listName) {
-        Optional<Playlist> optional = repository.findByNome(listName);
-
-        if (optional.isPresent()) {
-            Playlist playlist = optional.get();
-            PlaylistDTO dto = new PlaylistDTO(playlist);
-            return ResponseEntity.ok(dto);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Playlist playlist = repository.findByNome(listName).orElseThrow(EntityNotFoundException::new);
+        PlaylistDTO dto = new PlaylistDTO(playlist);
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity save(@RequestBody @Valid PlaylistDTO dto, UriComponentsBuilder uriBuilder) {
-        if (repository.findByNome(dto.nome()).isPresent()) {
+        if (repository.findByNome(dto.nome()).isPresent())
             throw new ValidationException("nome", "Essa playlist já existe");
-        }
 
         Playlist playlist = new Playlist(dto);
         repository.save(playlist);
         URI uri = uriBuilder.path("/lists/{listName}").buildAndExpand(playlist.getNome()).toUri();
         return ResponseEntity.created(uri).body(new PlaylistDTO(playlist));
+    }
+
+    @DeleteMapping("/{listName}")
+    @Transactional
+    public ResponseEntity delete(@PathVariable String listName) {
+        Playlist playlist = repository.findByNome(listName).orElseThrow(EntityNotFoundException::new);
+        repository.delete(playlist);
+        return ResponseEntity.noContent().build();
     }
 
 }

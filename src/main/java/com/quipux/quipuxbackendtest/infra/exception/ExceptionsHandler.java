@@ -1,5 +1,6 @@
 package com.quipux.quipuxbackendtest.infra.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,6 +13,11 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ExceptionsHandler {
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity handleError404() {
+        return ResponseEntity.notFound().build();
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity handleError400(MethodArgumentNotValidException exception) {
