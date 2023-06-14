@@ -22,7 +22,7 @@ public class Playlist {
     private Long id;
     private String nome;
     private String descricao;
-    @OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "playlist")
     private List<Song> musicas;
 
     public List<SongDTO> getMusicasDTOs() {
