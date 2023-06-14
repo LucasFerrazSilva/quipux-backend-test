@@ -25,4 +25,9 @@ public class ExceptionsHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
     }
 
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity handleValidationException(ValidationException ex) {
+        return ResponseEntity.badRequest().body(ex.getDto());
+    }
+
 }

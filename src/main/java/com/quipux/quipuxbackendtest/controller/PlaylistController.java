@@ -4,6 +4,7 @@ import com.quipux.quipuxbackendtest.domain.playlist.Playlist;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistDTO;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistRepository;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistsListDTO;
+import com.quipux.quipuxbackendtest.infra.exception.ValidationException;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -51,6 +52,10 @@ public class PlaylistController {
 
     @PostMapping
     public ResponseEntity save(@RequestBody @Valid PlaylistDTO dto, UriComponentsBuilder uriBuilder) {
+        if (repository.findByNome(dto.nome()).isPresent()) {
+            throw new ValidationException("nome", "Essa playlist já existe");
+        }
+
         Playlist playlist = new Playlist(dto);
         repository.save(playlist);
         URI uri = uriBuilder.path("/lists/{listName}").buildAndExpand(playlist.getNome()).toUri();
