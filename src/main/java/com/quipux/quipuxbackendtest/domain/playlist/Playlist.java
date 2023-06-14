@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of="id")
-@ToString
+@ToString(exclude="musicas")
 public class Playlist {
 
     @Id
@@ -22,8 +22,14 @@ public class Playlist {
     private Long id;
     private String nome;
     private String descricao;
-    @OneToMany(mappedBy = "playlist")
+    @OneToMany(mappedBy = "playlist", cascade = CascadeType.ALL)
     private List<Song> musicas;
+
+    public Playlist(PlaylistDTO dto) {
+        this.nome = dto.nome();
+        this.descricao = dto.descricao();
+        this.musicas = dto.musicas().stream().map(musica -> new Song(musica, this)).toList();
+    }
 
     public List<SongDTO> getMusicasDTOs() {
         return this.musicas.stream().map(SongDTO::new).toList();

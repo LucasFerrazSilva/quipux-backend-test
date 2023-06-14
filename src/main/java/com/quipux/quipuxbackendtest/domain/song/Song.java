@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of="id")
-@ToString
 public class Song {
 
     @Id
@@ -25,4 +24,12 @@ public class Song {
     @JoinColumn(name="playlist_id")
     private Playlist playlist;
 
+    public Song(SongDTO musica, Playlist playlist) {
+        this.titulo = musica.titulo();
+        this.artista = musica.artista();
+        this.album = musica.album();
+        this.ano = musica.ano();
+        this.genero = musica.genero();
+        this.playlist = playlist;
+    }
 }

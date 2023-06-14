@@ -4,13 +4,13 @@ import com.quipux.quipuxbackendtest.domain.playlist.Playlist;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistDTO;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistRepository;
 import com.quipux.quipuxbackendtest.domain.playlist.PlaylistsListDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -47,6 +47,14 @@ public class PlaylistController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping
+    public ResponseEntity save(@RequestBody @Valid PlaylistDTO dto, UriComponentsBuilder uriBuilder) {
+        Playlist playlist = new Playlist(dto);
+        repository.save(playlist);
+        URI uri = uriBuilder.path("/lists/{listName}").buildAndExpand(playlist.getNome()).toUri();
+        return ResponseEntity.created(uri).body(new PlaylistDTO(playlist));
     }
 
 }
