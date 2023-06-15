@@ -48,7 +48,7 @@ public class PlaylistController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity save(@RequestBody @Valid PlaylistDTO dto, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity create(@RequestBody @Valid PlaylistDTO dto, UriComponentsBuilder uriBuilder) {
         if (repository.findByNome(dto.nome()).isPresent())
             throw new ValidationException("nome", "Essa playlist já existe");
 

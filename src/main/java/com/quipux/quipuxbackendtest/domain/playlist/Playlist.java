@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of="id")
-@ToString(exclude="musicas")
+@ToString
 public class Playlist {
 
     @Id

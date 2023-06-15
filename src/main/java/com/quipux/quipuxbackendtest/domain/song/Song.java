@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode(of="id")
+@ToString(exclude = "playlist")
 public class Song {
 
     @Id
