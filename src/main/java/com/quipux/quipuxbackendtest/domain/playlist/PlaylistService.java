@@ -28,7 +28,7 @@ public class PlaylistService {
         return playlists;
     }
 
-    public PlaylistDTO getPlaylistDTO(String listName) {
+    public PlaylistDTO getPlaylistDescription(String listName) {
         Playlist playlist = repository.findByNome(listName).orElseThrow(EntityNotFoundException::new);
         PlaylistDTO dto = new PlaylistDTO(playlist);
         return dto;

@@ -28,7 +28,7 @@ public class PlaylistController {
 
     @GetMapping("/{listName}")
     public ResponseEntity describeList(@PathVariable String listName) {
-        PlaylistDTO dto = service.getPlaylistDTO(listName);
+        PlaylistDTO dto = service.getPlaylistDescription(listName);
         return ResponseEntity.ok(dto);
     }
 
