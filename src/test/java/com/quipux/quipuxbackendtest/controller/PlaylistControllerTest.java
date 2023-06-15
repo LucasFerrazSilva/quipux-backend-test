@@ -56,13 +56,11 @@ class PlaylistControllerTest {
     @Autowired
     private PlaylistRepository repository;
     private Playlist playlist1;
-    private Playlist playlist2;
 
     @BeforeEach
     void beforeEach() {
         repository.deleteAll();
         playlist1 = createPlaylist1();
-        playlist2 = createPlaylist2();
     }
 
     @Test
@@ -70,6 +68,7 @@ class PlaylistControllerTest {
     @DisplayName("Deve retornar 200 (OK) e o json da playlist quando é acessar /lists")
     void testList() throws Exception {
         // Given
+        Playlist playlist2 = createPlaylist2();
         List<PlaylistsListDTO> listDTO = List.of(
                 new PlaylistsListDTO(playlist1, "http://localhost/lists/" + playlist1.getNome()),
                 new PlaylistsListDTO(playlist2, "http://localhost/lists/" + playlist2.getNome())

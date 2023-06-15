@@ -29,8 +29,6 @@ class AuthenticationControllerTest {
     @Test
     @DisplayName("Deve retornar 400 (Bad Request) quando chamar /login sem enviar um body")
     void testInvalidLogin1() throws Exception {
-        // Given
-
         // When
         MockHttpServletResponse response = mvc.perform(post("/login")).andReturn().getResponse();
 
